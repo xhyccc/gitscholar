@@ -9,7 +9,7 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 
 from sci.cli.utils import console, get_state_manager, require_init
-from sci.models.local import DailyEntry, DailyLog
+from sci.models.local import DailyEntry
 
 app = typer.Typer(invoke_without_command=True)
 

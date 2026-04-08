@@ -46,7 +46,7 @@ def _read_yaml(path: Path) -> dict:
     """Read a YAML file and return a dict. Returns empty dict if file doesn't exist."""
     if not path.exists():
         return {}
-    with open(path, "r") as f:
+    with open(path) as f:
         data = yaml.load(f)
     return data if data is not None else {}
 

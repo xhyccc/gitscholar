@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sci.core.prompts import PromptBuilder
 from sci.models.local import (
@@ -30,15 +30,15 @@ class TestPromptBuilder:
                 priority=Priority.HIGH,
                 story_points=8,
                 status=BacklogStatus.READY,
-                created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
-                updated_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+                created_at=datetime(2026, 1, 1, tzinfo=UTC),
+                updated_at=datetime(2026, 1, 1, tzinfo=UTC),
             ),
             BacklogItem(
                 id="PBI-002",
                 title="Done item",
                 status=BacklogStatus.DONE,
-                created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
-                updated_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+                created_at=datetime(2026, 1, 1, tzinfo=UTC),
+                updated_at=datetime(2026, 1, 1, tzinfo=UTC),
             ),
         ])
 
@@ -61,8 +61,8 @@ class TestPromptBuilder:
             sprint=Sprint(
                 id="SPR-001",
                 goal="Build decoder",
-                start_date=datetime(2026, 1, 1, tzinfo=timezone.utc),
-                end_date=datetime(2026, 1, 15, tzinfo=timezone.utc),
+                start_date=datetime(2026, 1, 1, tzinfo=UTC),
+                end_date=datetime(2026, 1, 15, tzinfo=UTC),
             ),
             related_papers=["arxiv:2301.01234"],
         )
@@ -82,8 +82,8 @@ class TestPromptBuilder:
             sprint=Sprint(
                 id="SPR-001",
                 goal="Test goal",
-                start_date=datetime(2026, 1, 1, tzinfo=timezone.utc),
-                end_date=datetime(2026, 1, 15, tzinfo=timezone.utc),
+                start_date=datetime(2026, 1, 1, tzinfo=UTC),
+                end_date=datetime(2026, 1, 15, tzinfo=UTC),
             ),
             board=board,
             velocity=16,
@@ -125,8 +125,8 @@ class TestPromptBuilder:
         sprint = Sprint(
             id="SPR-001",
             goal="Test",
-            start_date=datetime(2026, 1, 1, tzinfo=timezone.utc),
-            end_date=datetime(2026, 1, 15, tzinfo=timezone.utc),
+            start_date=datetime(2026, 1, 1, tzinfo=UTC),
+            end_date=datetime(2026, 1, 15, tzinfo=UTC),
         )
 
         prompts = [

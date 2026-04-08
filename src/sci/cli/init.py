@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import typer
 from rich.panel import Panel
@@ -20,12 +20,11 @@ def init_command(
     """Initialize a new GitScholar project in the current directory."""
     state = get_state_manager()
 
-    if state.is_initialized:
-        if not Confirm.ask(
-            "[yellow]GitScholar is already initialized here. Re-initialize?[/yellow]",
-            default=False,
-        ):
-            raise SystemExit(0)
+    if state.is_initialized and not Confirm.ask(
+        "[yellow]GitScholar is already initialized here. Re-initialize?[/yellow]",
+        default=False,
+    ):
+        raise SystemExit(0)
 
     console.print(Panel.fit(
         "[bold blue]🎓 GitScholar Project Initialization[/bold blue]",
@@ -46,7 +45,7 @@ def init_command(
             name=project_name,
             description=description,
             domain=domain,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         ),
         scrum=ScrumConfig(roles=ScrumRoles()),
         agent=AgentConfig(),
@@ -68,7 +67,7 @@ def init_command(
             scholar=ScholarIdentity(
                 name=scholar_name,
                 email=email,
-                joined_at=datetime.now(timezone.utc),
+                joined_at=datetime.now(UTC),
             )
         )
         try:

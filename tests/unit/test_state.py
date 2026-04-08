@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -15,21 +15,16 @@ from sci.models.local import (
     HypothesisStatus,
     KanbanBoard,
     Priority,
-    ProductBacklog,
     ProjectConfig,
     ProjectInfo,
     Sprint,
 )
 from sci.models.scholar import (
-    GlobalSettings,
-    ISPLevel,
     Milestone,
     MilestoneCategory,
-    MilestoneTracker,
     ScholarIdentity,
     ScholarProfile,
     Skill,
-    SkillTree,
 )
 from sci.persistence.state import StateManager
 
@@ -51,7 +46,7 @@ def initialized_state(tmp_state: StateManager) -> StateManager:
             name="test-project",
             description="A test project",
             domain="testing",
-            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
     )
     tmp_state.init_local(config)
@@ -60,7 +55,7 @@ def initialized_state(tmp_state: StateManager) -> StateManager:
         scholar=ScholarIdentity(
             name="Test Scholar",
             email="test@example.com",
-            joined_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            joined_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
     )
     tmp_state.init_global(profile)
@@ -76,7 +71,7 @@ class TestStateManagerInit:
 
     def test_init_local_creates_directories(self, tmp_state: StateManager) -> None:
         config = ProjectConfig(
-            project=ProjectInfo(name="test", created_at=datetime(2026, 1, 1, tzinfo=timezone.utc))
+            project=ProjectInfo(name="test", created_at=datetime(2026, 1, 1, tzinfo=UTC))
         )
         tmp_state.init_local(config)
 
@@ -92,7 +87,7 @@ class TestStateManagerInit:
         profile = ScholarProfile(
             scholar=ScholarIdentity(
                 name="Scholar",
-                joined_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+                joined_at=datetime(2026, 1, 1, tzinfo=UTC),
             )
         )
         tmp_state.init_global(profile)
@@ -122,8 +117,8 @@ class TestLocalState:
             priority=Priority.HIGH,
             story_points=5,
             status=BacklogStatus.READY,
-            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
-            updated_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2026, 1, 1, tzinfo=UTC),
+            updated_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
         backlog.items.append(item)
         initialized_state.save_backlog(backlog)
@@ -155,8 +150,8 @@ class TestLocalState:
         sprint = Sprint(
             id="SPR-001",
             goal="Test sprint",
-            start_date=datetime(2026, 1, 1, tzinfo=timezone.utc),
-            end_date=datetime(2026, 1, 15, tzinfo=timezone.utc),
+            start_date=datetime(2026, 1, 1, tzinfo=UTC),
+            end_date=datetime(2026, 1, 15, tzinfo=UTC),
             status="active",
         )
         initialized_state.save_current_sprint(sprint)
@@ -170,8 +165,8 @@ class TestLocalState:
         sprint = Sprint(
             id="SPR-001",
             goal="Archived sprint",
-            start_date=datetime(2026, 1, 1, tzinfo=timezone.utc),
-            end_date=datetime(2026, 1, 15, tzinfo=timezone.utc),
+            start_date=datetime(2026, 1, 1, tzinfo=UTC),
+            end_date=datetime(2026, 1, 15, tzinfo=UTC),
             status="completed",
         )
         initialized_state.archive_sprint(sprint)
@@ -185,7 +180,7 @@ class TestLocalState:
             id="HYP-001",
             statement="Test hypothesis",
             status=HypothesisStatus.PROPOSED,
-            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
         tracker.hypotheses.append(hyp)
         initialized_state.save_hypotheses(tracker)
@@ -216,7 +211,7 @@ class TestGlobalState:
             name="First Sprint",
             category=MilestoneCategory.SCRUM,
             achieved=True,
-            achieved_at=datetime(2026, 2, 1, tzinfo=timezone.utc),
+            achieved_at=datetime(2026, 2, 1, tzinfo=UTC),
             project="test-project",
         )
         tracker.milestones.append(milestone)

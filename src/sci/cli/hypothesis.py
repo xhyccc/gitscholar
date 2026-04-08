@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import contextlib
+from datetime import UTC, datetime
 
 import typer
 from rich.panel import Panel
@@ -21,10 +22,8 @@ def _next_hyp_id(existing_ids: list[str]) -> str:
     for hyp_id in existing_ids:
         parts = hyp_id.split("-")
         if len(parts) == 2:
-            try:
+            with contextlib.suppress(ValueError):
                 max_num = max(max_num, int(parts[1]))
-            except ValueError:
-                pass
     return f"HYP-{max_num + 1:03d}"
 
 
@@ -37,7 +36,9 @@ def list_hypotheses() -> None:
     tracker = state.load_hypotheses()
 
     if not tracker.hypotheses:
-        console.print("[dim]No hypotheses found. Run [bold]sci hypothesis add[/bold] to create one.[/dim]")
+        console.print(
+            "[dim]No hypotheses found. Run [bold]sci hypothesis add[/bold] to create one.[/dim]"
+        )
         return
 
     table = Table(title="Research Hypotheses", show_lines=True)
@@ -84,7 +85,7 @@ def add(
         id=hyp_id,
         statement=statement,
         status=HypothesisStatus.PROPOSED,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )
 
     tracker.hypotheses.append(hypothesis)

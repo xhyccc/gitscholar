@@ -15,8 +15,9 @@ def show(
     is_global: bool = typer.Option(False, "--global", "-g", help="Show global settings"),
 ) -> None:
     """Show the current configuration."""
-    from ruamel.yaml import YAML
     from io import StringIO
+
+    from ruamel.yaml import YAML
 
     state = get_state_manager()
     yaml = YAML()

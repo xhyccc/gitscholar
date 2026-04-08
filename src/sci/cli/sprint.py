@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import typer
 from rich.panel import Panel
@@ -15,7 +15,7 @@ from sci.models.local import Sprint, SprintBacklog
 app = typer.Typer(no_args_is_help=True)
 
 
-def _next_sprint_id(state_mgr) -> str:  # noqa: ANN001
+def _next_sprint_id(state_mgr) -> str:
     """Generate the next sprint ID by checking the archive."""
     archive_dir = state_mgr.local_dir / "sprints" / "archive"
     if not archive_dir.exists():
@@ -46,7 +46,7 @@ def start(
     sprint_days = duration or config.scrum.sprint_duration_days
     sprint_id = _next_sprint_id(state)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     sprint = Sprint(
         id=sprint_id,
         goal=goal,
@@ -81,7 +81,7 @@ def status() -> None:
     sprint = state.load_current_sprint()
     board = state.load_board()
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     total_days = (sprint.end_date - sprint.start_date).days
     elapsed_days = min((now - sprint.start_date).days, total_days)
 

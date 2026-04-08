@@ -3,29 +3,28 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
-
 
 # --- Enums ---
 
 
-class BacklogItemType(str, Enum):
+class BacklogItemType(StrEnum):
     RESEARCH_TASK = "research_task"
     EXPERIMENT = "experiment"
     WRITING = "writing"
     REVIEW = "review"
 
 
-class Priority(str, Enum):
+class Priority(StrEnum):
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
     LOW = "low"
 
 
-class BacklogStatus(str, Enum):
+class BacklogStatus(StrEnum):
     DRAFT = "draft"
     READY = "ready"
     IN_PROGRESS = "in_progress"
@@ -33,14 +32,14 @@ class BacklogStatus(str, Enum):
     BLOCKED = "blocked"
 
 
-class TaskStatus(str, Enum):
+class TaskStatus(StrEnum):
     TODO = "todo"
     IN_PROGRESS = "in_progress"
     REVIEW = "review"
     DONE = "done"
 
 
-class HypothesisStatus(str, Enum):
+class HypothesisStatus(StrEnum):
     PROPOSED = "proposed"
     TESTING = "testing"
     SUPPORTED = "supported"
@@ -48,7 +47,7 @@ class HypothesisStatus(str, Enum):
     REVISED = "revised"
 
 
-class EvidenceOutcome(str, Enum):
+class EvidenceOutcome(StrEnum):
     SUPPORT = "support"
     PARTIAL_SUPPORT = "partial_support"
     REFUTE = "refute"

@@ -3,15 +3,14 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
-
 
 # --- Enums ---
 
 
-class ISPLevel(str, Enum):
+class ISPLevel(StrEnum):
     NOVICE = "novice"
     EXPLORER = "explorer"
     CONTRIBUTOR = "contributor"
@@ -19,14 +18,14 @@ class ISPLevel(str, Enum):
     MASTER = "master"
 
 
-class MilestoneCategory(str, Enum):
+class MilestoneCategory(StrEnum):
     SCRUM = "scrum"
     RESEARCH = "research"
     COMMUNITY = "community"
     GROWTH = "growth"
 
 
-class CLITheme(str, Enum):
+class CLITheme(StrEnum):
     DARK = "dark"
     LIGHT = "light"
     AUTO = "auto"

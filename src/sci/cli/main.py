@@ -34,9 +34,9 @@ app.add_typer(scholar_app, name="scholar", help="Scholar profile and ISP dashboa
 @app.command()
 def version() -> None:
     """Show the GitScholar CLI version."""
-    from sci import __version__
-
     from rich.console import Console
+
+    from sci import __version__
 
     console = Console()
     console.print(f"[bold]GitScholar CLI (sci)[/bold] v{__version__}")

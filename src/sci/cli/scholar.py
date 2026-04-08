@@ -12,7 +12,7 @@ from sci.cli.utils import console, err_console
 app = typer.Typer(invoke_without_command=True)
 
 
-def _load_global_state():  # noqa: ANN202
+def _load_global_state():
     """Load global state, handling missing profile gracefully."""
     from sci.persistence.state import StateManager
     state = StateManager()
@@ -71,7 +71,7 @@ def scholar_dashboard(ctx: typer.Context) -> None:
             achieved = sum(1 for m in milestones.milestones if m.achieved)
             total = len(milestones.milestones)
             console.print(f"\n[bold]Milestones:[/bold] {achieved}/{total} achieved")
-    except Exception:  # noqa: BLE001
+    except Exception:
         pass
 
     # Show skills summary
@@ -89,7 +89,7 @@ def scholar_dashboard(ctx: typer.Context) -> None:
             ) as progress:
                 for skill in sorted(all_skills, key=lambda s: s.level, reverse=True)[:5]:
                     progress.add_task(skill.name, total=5, completed=skill.level)
-    except Exception:  # noqa: BLE001
+    except Exception:
         pass
 
 

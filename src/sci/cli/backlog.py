@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import contextlib
+from datetime import UTC, datetime
 
 import typer
 from rich.table import Table
@@ -19,10 +20,8 @@ def _next_id(prefix: str, existing_ids: list[str]) -> str:
     for item_id in existing_ids:
         parts = item_id.split("-")
         if len(parts) == 2:
-            try:
+            with contextlib.suppress(ValueError):
                 max_num = max(max_num, int(parts[1]))
-            except ValueError:
-                pass
     return f"{prefix}-{max_num + 1:03d}"
 
 
@@ -94,7 +93,7 @@ def add_item(
     backlog = state.load_backlog()
     item_id = _next_id("PBI", [i.id for i in backlog.items])
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     item = BacklogItem(
         id=item_id,
         title=title,

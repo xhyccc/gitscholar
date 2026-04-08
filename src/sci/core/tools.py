@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Tool(ABC):
@@ -28,7 +28,7 @@ class Tool(ABC):
 class ToolRegistry:
     """Registry for managing tools exposed to the Agent engine."""
 
-    _tools: dict[str, Tool] = {}
+    _tools: ClassVar[dict[str, Tool]] = {}
 
     @classmethod
     def register(cls, tool_class: type[Tool]) -> type[Tool]:

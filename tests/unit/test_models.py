@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
+from pydantic import ValidationError
 
 from sci.models.local import (
     BacklogItem,
@@ -15,7 +16,6 @@ from sci.models.local import (
     Experiment,
     Hypothesis,
     HypothesisStatus,
-    KanbanBoard,
     KanbanColumn,
     Priority,
     ProductBacklog,
@@ -33,7 +33,6 @@ from sci.models.scholar import (
     ISPLevel,
     Milestone,
     MilestoneCategory,
-    MilestoneTracker,
     ScholarIdentity,
     ScholarProfile,
     Skill,
@@ -50,7 +49,7 @@ class TestLocalModels:
                 name="test",
                 description="desc",
                 domain="testing",
-                created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+                created_at=datetime(2026, 1, 1, tzinfo=UTC),
             )
         )
         assert config.version == "1.0"
@@ -79,8 +78,8 @@ class TestLocalModels:
             assignee="charlie",
             linked_hypotheses=["HYP-001"],
             linked_papers=["arxiv:2301.01234"],
-            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
-            updated_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2026, 1, 1, tzinfo=UTC),
+            updated_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
         assert item.story_points == 8
         assert len(item.acceptance_criteria) == 1
@@ -120,8 +119,8 @@ class TestLocalModels:
         sprint = Sprint(
             id="SPR-001",
             goal="Build decoder",
-            start_date=datetime(2026, 1, 1, tzinfo=timezone.utc),
-            end_date=datetime(2026, 1, 15, tzinfo=timezone.utc),
+            start_date=datetime(2026, 1, 1, tzinfo=UTC),
+            end_date=datetime(2026, 1, 15, tzinfo=UTC),
         )
         assert sprint.status == "active"
         assert sprint.velocity is None
@@ -143,7 +142,7 @@ class TestLocalModels:
                     notes="Partial results",
                 )
             ],
-            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
         assert hyp.status == HypothesisStatus.TESTING
         assert len(hyp.evidence) == 1
@@ -156,7 +155,7 @@ class TestLocalModels:
             hypothesis_id="HYP-001",
             parameters={"noise_rate": 0.01, "distance": 3},
             results={"error_rate": 0.005},
-            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2026, 1, 1, tzinfo=UTC),
         )
         assert exp.parameters["noise_rate"] == 0.01
 
@@ -171,7 +170,7 @@ class TestScholarModels:
                 email="charlie@test.edu",
                 isp_level=ISPLevel.EXPLORER,
                 research_interests=["quantum"],
-                joined_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+                joined_at=datetime(2026, 1, 1, tzinfo=UTC),
             )
         )
         assert profile.scholar.isp_level == ISPLevel.EXPLORER
@@ -183,7 +182,7 @@ class TestScholarModels:
             name="First Sprint",
             category=MilestoneCategory.SCRUM,
             achieved=True,
-            achieved_at=datetime(2026, 2, 1, tzinfo=timezone.utc),
+            achieved_at=datetime(2026, 2, 1, tzinfo=UTC),
         )
         assert m.achieved is True
         assert m.category == MilestoneCategory.SCRUM
@@ -192,10 +191,10 @@ class TestScholarModels:
         skill = Skill(name="Python", level=3)
         assert 1 <= skill.level <= 5
 
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             Skill(name="Bad", level=0)
 
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             Skill(name="Bad", level=6)
 
     def test_skill_tree(self) -> None:
@@ -221,7 +220,7 @@ class TestScholarModels:
                 name="Test",
                 email="test@test.com",
                 isp_level=ISPLevel.CONTRIBUTOR,
-                joined_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+                joined_at=datetime(2026, 1, 1, tzinfo=UTC),
             )
         )
         data = profile.model_dump(mode="json")
