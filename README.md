@@ -25,8 +25,22 @@ Persistence Layer      ← .gitscholar/ (local) + ~/.gitscholar/ (global)
 
 ### Installation
 
+#### Install from source (macOS / Linux)
+
 ```bash
-pip install gitscholar
+git clone https://github.com/xhyccc/gitscholar.git
+cd gitscholar
+./install.sh          # standard install
+# or
+./install.sh --dev    # editable install with dev dependencies
+```
+
+#### Install with pip (from source)
+
+```bash
+git clone https://github.com/xhyccc/gitscholar.git
+cd gitscholar
+pip install .
 ```
 
 ### Initialize a Project
