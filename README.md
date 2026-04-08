@@ -89,7 +89,7 @@ sci config set git.signing_key ABCDEF1234567890 --global
 
 # Set per-project settings
 sci config set scrum.sprint_duration_days 7
-sci config set agent.model claude-sonnet-4
+sci config set agent.engine claw-code
 ```
 
 ### Reading values
