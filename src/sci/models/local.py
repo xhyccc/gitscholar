@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -195,8 +196,8 @@ class Experiment(BaseModel):
     id: str
     title: str
     hypothesis_id: str | None = None
-    parameters: dict[str, str | int | float | bool] = Field(default_factory=dict)
-    results: dict[str, str | int | float | bool] = Field(default_factory=dict)
+    parameters: dict[str, Any] = Field(default_factory=dict)
+    results: dict[str, Any] = Field(default_factory=dict)
     conclusion: str = ""
     created_at: datetime = Field(default_factory=datetime.now)
 
