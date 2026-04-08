@@ -209,7 +209,7 @@ class TestScholarModels:
     def test_global_settings_defaults(self) -> None:
         settings = GlobalSettings()
         assert settings.cli.theme == CLITheme.DARK
-        assert settings.agent.default_model == "claude-sonnet-4"
+        assert settings.agent.llm.model == "claude-sonnet-4"
         assert settings.agent.temperature == 0.3
         assert settings.notifications.milestone_celebrations is True
 

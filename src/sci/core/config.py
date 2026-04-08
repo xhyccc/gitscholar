@@ -28,8 +28,7 @@ def resolve_llm_config(agent: AgentSettings) -> LLMProviderConfig:
     Priority (highest to lowest):
       1. Explicit values in settings.yaml ``agent.llm.*``
       2. Environment variables (``SCI_LLM_*``)
-      3. Legacy environment variable for API key (``CLAW_API_KEY``)
-      4. Built-in defaults (model from ``agent.default_model``)
+      3. Built-in defaults (``agent.llm.model`` default: ``claude-sonnet-4``)
     """
     llm = agent.llm
 
@@ -40,16 +39,14 @@ def resolve_llm_config(agent: AgentSettings) -> LLMProviderConfig:
     api_key = (
         llm.api_key
         or os.environ.get("SCI_LLM_API_KEY", "")
-        or os.environ.get(agent.api_key_env, "")
     )
     api_base = (
         llm.api_base
         or os.environ.get("SCI_LLM_API_BASE", "")
     )
     model = (
-        llm.model
-        or os.environ.get("SCI_LLM_MODEL", "")
-        or agent.default_model
+        os.environ.get("SCI_LLM_MODEL", "")
+        or llm.model
     )
 
     return LLMProviderConfig(
