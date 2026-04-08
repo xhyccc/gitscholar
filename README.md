@@ -124,9 +124,8 @@ Sensitive values like API keys can be provided via environment variables instead
 |----------|-------------|
 | `SCI_LLM_API_KEY` | LLM provider API key |
 | `SCI_LLM_API_BASE` | LLM provider base URL |
-| `SCI_LLM_MODEL` | Default model name |
+| `SCI_LLM_MODEL` | Model name (overrides `agent.llm.model`) |
 | `SCI_LLM_PROVIDER` | Provider name (e.g. `openai`, `anthropic`) |
-| `CLAW_API_KEY` | Legacy API key (fallback) |
 
 ### Example `~/.gitscholar/settings.yaml`
 
@@ -137,15 +136,13 @@ cli:
   editor: vim
   pager: less
 agent:
-  default_model: claude-sonnet-4
-  api_key_env: CLAW_API_KEY
   max_tokens: 4096
   temperature: 0.3
   llm:
     provider: openai
     api_key: ""            # prefer SCI_LLM_API_KEY env var
     api_base: https://api.openai.com/v1
-    model: gpt-4o
+    model: gpt-4o          # default: claude-sonnet-4
 git:
   user_name: Jane Doe
   user_email: jane@university.edu

@@ -52,7 +52,7 @@ class TestResolveLLMConfig:
         assert resolved.provider == ""
         assert resolved.api_key == ""
         assert resolved.api_base == ""
-        assert resolved.model == agent.default_model
+        assert resolved.model == "claude-sonnet-4"
 
 
 class TestResolveGitConfig:

@@ -201,7 +201,7 @@ class TestGlobalState:
     def test_settings_defaults(self, initialized_state: StateManager) -> None:
         settings = initialized_state.load_global_settings()
         assert settings.cli.theme.value == "dark"
-        assert settings.agent.default_model == "claude-sonnet-4"
+        assert settings.agent.llm.model == "claude-sonnet-4"
         assert settings.notifications.sprint_reminders is True
 
     def test_milestones_roundtrip(self, initialized_state: StateManager) -> None:

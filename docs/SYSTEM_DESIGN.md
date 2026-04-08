@@ -301,8 +301,6 @@ cli:
   pager: "less"
 
 agent:
-  default_model: "claude-sonnet-4"
-  api_key_env: "CLAW_API_KEY"    # Name of env var holding the key
   max_tokens: 4096
   temperature: 0.3
 

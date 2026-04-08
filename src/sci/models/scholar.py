@@ -134,11 +134,10 @@ class LLMProviderConfig(BaseModel):
     provider: str = ""
     api_key: str = ""
     api_base: str = ""
-    model: str = ""
+    model: str = "claude-sonnet-4"
 
 
 class AgentSettings(BaseModel):
-    default_model: str = "claude-sonnet-4"
     max_tokens: int = 4096
     temperature: float = 0.3
     llm: LLMProviderConfig = Field(default_factory=LLMProviderConfig)
