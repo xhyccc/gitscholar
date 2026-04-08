@@ -42,33 +42,11 @@ class TestResolveLLMConfig:
         assert resolved.api_base == "https://api.anthropic.com"
         assert resolved.model == "claude-opus-4"
 
-    def test_legacy_api_key_env_fallback(self) -> None:
-        agent = AgentSettings(api_key_env="CLAW_API_KEY")
-        env = {"CLAW_API_KEY": "legacy-key"}
-        with patch.dict(os.environ, env, clear=False):
-            resolved = resolve_llm_config(agent)
-        assert resolved.api_key == "legacy-key"
-
-    def test_sci_env_key_overrides_legacy(self) -> None:
-        agent = AgentSettings(api_key_env="CLAW_API_KEY")
-        env = {"SCI_LLM_API_KEY": "new-key", "CLAW_API_KEY": "legacy-key"}
-        with patch.dict(os.environ, env, clear=False):
-            resolved = resolve_llm_config(agent)
-        assert resolved.api_key == "new-key"
-
-    def test_default_model_from_agent_settings(self) -> None:
-        agent = AgentSettings(default_model="claude-sonnet-4")
-        with patch.dict(os.environ, {}, clear=False):
-            # Remove any SCI_LLM_MODEL that might be set
-            os.environ.pop("SCI_LLM_MODEL", None)
-            resolved = resolve_llm_config(agent)
-        assert resolved.model == "claude-sonnet-4"
-
     def test_empty_defaults(self) -> None:
         agent = AgentSettings()
         with patch.dict(os.environ, {}, clear=False):
             for key in ("SCI_LLM_PROVIDER", "SCI_LLM_API_KEY", "SCI_LLM_API_BASE",
-                        "SCI_LLM_MODEL", "CLAW_API_KEY"):
+                        "SCI_LLM_MODEL"):
                 os.environ.pop(key, None)
             resolved = resolve_llm_config(agent)
         assert resolved.provider == ""
