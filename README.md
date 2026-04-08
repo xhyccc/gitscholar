@@ -64,12 +64,95 @@ sci scholar milestones
 sci scholar skills
 ```
 
+## Configuration
+
+GitScholar is **configurable** at two levels:
+
+- **Global** (`~/.gitscholar/settings.yaml`) — LLM API credentials, git identity, CLI theme
+- **Local** (`.gitscholar/config.yaml`) — per-project Scrum, agent, and research settings
+
+By default the system uses your **system git config** and looks for API keys in **environment variables**, so zero configuration is needed to get started.
+
+### Setting values
+
+```bash
+# Set LLM provider and API key (global)
+sci config set agent.llm.provider openai --global
+sci config set agent.llm.api_key sk-proj-abc123 --global
+sci config set agent.llm.api_base https://api.openai.com/v1 --global
+sci config set agent.llm.model gpt-4o --global
+
+# Set git identity (overrides system git config)
+sci config set git.user_name "Jane Doe" --global
+sci config set git.user_email jane@university.edu --global
+sci config set git.signing_key ABCDEF1234567890 --global
+
+# Set per-project settings
+sci config set scrum.sprint_duration_days 7
+sci config set agent.engine claw-code
+```
+
+### Reading values
+
+```bash
+sci config show                # show project config
+sci config show --global       # show global settings
+sci config show --global -r    # show resolved settings (with env/git defaults applied)
+sci config get agent.llm.model --global
+sci config get git.user_email --global --resolved
+```
+
+### Environment variables
+
+Sensitive values like API keys can be provided via environment variables instead of storing them in config files:
+
+| Variable | Description |
+|----------|-------------|
+| `SCI_LLM_API_KEY` | LLM provider API key |
+| `SCI_LLM_API_BASE` | LLM provider base URL |
+| `SCI_LLM_MODEL` | Default model name |
+| `SCI_LLM_PROVIDER` | Provider name (e.g. `openai`, `anthropic`) |
+| `CLAW_API_KEY` | Legacy API key (fallback) |
+
+### Example `~/.gitscholar/settings.yaml`
+
+```yaml
+cli:
+  theme: dark
+  language: en
+  editor: vim
+  pager: less
+agent:
+  default_model: claude-sonnet-4
+  api_key_env: CLAW_API_KEY
+  max_tokens: 4096
+  temperature: 0.3
+  llm:
+    provider: openai
+    api_key: ""            # prefer SCI_LLM_API_KEY env var
+    api_base: https://api.openai.com/v1
+    model: gpt-4o
+git:
+  user_name: Jane Doe
+  user_email: jane@university.edu
+  signing_key: ""
+notifications:
+  sprint_reminders: true
+  daily_standup_prompt: "09:00"
+  milestone_celebrations: true
+```
+
+> **Tip:** Run `sci config show --global --resolved` to see the effective configuration after merging environment variables and system git defaults.
+
 ## Commands
 
 | Command | Description |
 |---------|-------------|
 | `sci init` | Initialize `.gitscholar/` in current repo |
 | `sci config show` | Show project or global configuration |
+| `sci config show --resolved` | Show resolved config with env/git defaults |
+| `sci config set <key> <val>` | Set a config value (dot-notation) |
+| `sci config get <key>` | Get a single config value |
 | `sci backlog list/add` | Manage the product backlog |
 | `sci sprint start/status/end` | Sprint lifecycle management |
 | `sci board` | Display the Kanban board |
