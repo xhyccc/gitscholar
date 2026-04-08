@@ -121,11 +121,40 @@ class CLISettings(BaseModel):
     pager: str = "less"
 
 
+class LLMProviderConfig(BaseModel):
+    """LLM API provider configuration.
+
+    By default, values are read from environment variables:
+      - SCI_LLM_API_KEY  (or CLAW_API_KEY as legacy fallback)
+      - SCI_LLM_API_BASE
+      - SCI_LLM_MODEL
+      - SCI_LLM_PROVIDER
+    """
+
+    provider: str = ""
+    api_key: str = ""
+    api_base: str = ""
+    model: str = ""
+
+
 class AgentSettings(BaseModel):
     default_model: str = "claude-sonnet-4"
     api_key_env: str = "CLAW_API_KEY"
     max_tokens: int = 4096
     temperature: float = 0.3
+    llm: LLMProviderConfig = Field(default_factory=LLMProviderConfig)
+
+
+class GitConfig(BaseModel):
+    """Git account configuration.
+
+    By default, values are read from the system git config.
+    Explicit values here override the system defaults.
+    """
+
+    user_name: str = ""
+    user_email: str = ""
+    signing_key: str = ""
 
 
 class NotificationSettings(BaseModel):
@@ -137,4 +166,5 @@ class NotificationSettings(BaseModel):
 class GlobalSettings(BaseModel):
     cli: CLISettings = Field(default_factory=CLISettings)
     agent: AgentSettings = Field(default_factory=AgentSettings)
+    git: GitConfig = Field(default_factory=GitConfig)
     notifications: NotificationSettings = Field(default_factory=NotificationSettings)
