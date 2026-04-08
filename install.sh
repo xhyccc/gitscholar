@@ -109,5 +109,6 @@ if command -v sci &>/dev/null; then
 else
     warn "The 'sci' command was not found on PATH."
     warn "You may need to add the pip scripts directory to your PATH."
-    warn "Try: export PATH=\"\$($PYTHON -m site --user-base)/bin:\$PATH\""
+    warn "If you installed with --user: export PATH=\"\$($PYTHON -m site --user-base)/bin:\$PATH\""
+    warn "If you are in a virtualenv:    export PATH=\"\$(dirname \$($PYTHON -c 'import sys; print(sys.executable)'))/:\$PATH\""
 fi
