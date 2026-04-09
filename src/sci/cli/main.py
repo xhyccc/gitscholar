@@ -10,6 +10,7 @@ from sci.cli.config import app as config_app
 from sci.cli.daily import app as daily_app
 from sci.cli.hypothesis import app as hypothesis_app
 from sci.cli.init import init_command
+from sci.cli.paper import app as paper_app
 from sci.cli.scholar import app as scholar_app
 from sci.cli.sprint import app as sprint_app
 
@@ -28,6 +29,7 @@ app.add_typer(sprint_app, name="sprint", help="Sprint lifecycle management.")
 app.add_typer(board_app, name="board", help="Display and manage the Kanban board.")
 app.add_typer(daily_app, name="daily", help="Daily standup management.")
 app.add_typer(hypothesis_app, name="hypothesis", help="Research hypothesis tracking.")
+app.add_typer(paper_app, name="paper", help="Manage paper references (arXiv/DOI auto-fetch).")
 app.add_typer(scholar_app, name="scholar", help="Scholar profile and ISP dashboard.")
 
 

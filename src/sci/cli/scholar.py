@@ -27,7 +27,26 @@ def _load_global_state():
     return state
 
 
-@app.callback()
+def _maybe_update_isp_level(state) -> None:  # type: ignore[no-untyped-def]
+    """Recompute and persist the scholar's ISP level if it changed."""
+    from sci.core.isp import compute_isp_level
+
+    try:
+        tracker = state.load_milestones()
+        skills = state.load_skills()
+        computed = compute_isp_level(tracker, skills)
+        profile = state.load_scholar_profile()
+        if computed != profile.scholar.isp_level:
+            profile.scholar.isp_level = computed
+            state.save_scholar_profile(profile)
+            console.print(
+                f"[bold green]🎉 ISP level advanced to "
+                f"{computed.value.title()}![/bold green]"
+            )
+    except Exception:
+        pass
+
+
 def scholar_dashboard(ctx: typer.Context) -> None:
     """Show the scholar dashboard."""
     if ctx.invoked_subcommand is not None:
@@ -64,19 +83,35 @@ def scholar_dashboard(ctx: typer.Context) -> None:
         border_style="blue",
     ))
 
-    # Show milestones summary
+    # Auto-update ISP level and show milestones summary
+    milestones = None
+    skills_data = None
     try:
+        from sci.core.isp import compute_isp_level
+
         milestones = state.load_milestones()
+        skills_data = state.load_skills()
+        computed_level = compute_isp_level(milestones, skills_data)
+
+        if computed_level != scholar.isp_level:
+            scholar.isp_level = computed_level
+            profile.scholar = scholar
+            state.save_scholar_profile(profile)
+            console.print(
+                f"[bold green]🎉 ISP level updated to "
+                f"{computed_level.value.title()}![/bold green]"
+            )
+
         if milestones.milestones:
             achieved = sum(1 for m in milestones.milestones if m.achieved)
             total = len(milestones.milestones)
             console.print(f"\n[bold]Milestones:[/bold] {achieved}/{total} achieved")
-    except Exception:
+    except (OSError, KeyError, ValueError):
         pass
 
     # Show skills summary
     try:
-        skills = state.load_skills()
+        skills = skills_data if skills_data is not None else state.load_skills()
         all_skills = (
             skills.technical + skills.research + skills.collaboration + skills.writing
         )
